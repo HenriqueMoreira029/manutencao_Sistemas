@@ -1,0 +1,100 @@
+import datetime
+
+# app.py – Sistema simples para manutenção
+
+class Calculadora:
+    def somar(self, a, b):
+        return a + b
+
+    def subtrair(self, a, b):
+        return a - b
+
+    def multiplicar(self, a, b):
+        return a * b
+
+    # CORREÇÃO: Tratamento de exceção para divisão por zero
+    def dividir(self, a, b):
+        if b == 0:
+            return "Erro: Divisão por zero não permitida."
+        return a / b
+
+    # NOVA FUNÇÃO: Cálculo de Potência (a^b)
+    def potencia(self, a, b):
+        return a ** b
+
+    # NOVA FUNÇÃO: Cálculo do Módulo/Resto da Divisão
+    def modulo(self, a, b):
+        if b == 0:
+            return "Erro: Divisão por zero não permitida para o módulo."
+        return a % b
+
+
+# Feature inacabada (agora implementada)
+def gerar_relatorio(operacao, resultado):
+    """
+    Gera um relatório textual sobre uma operação matemática, adicionando data/hora
+    e salvando em um arquivo .txt (log_calculadora.txt).
+    """
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    linha_relatorio = f"[{timestamp}] - Operação: {operacao} | Resultado: {resultado}"
+    
+    # Salva em um arquivo de log simples
+    try:
+        with open("log_calculadora.txt", "a") as f:
+            f.write(linha_relatorio + "\n")
+    except Exception as e:
+        print(f"Erro ao salvar o relatório: {e}")
+
+    return linha_relatorio
+
+
+# Função principal
+def main():
+    calc = Calculadora()
+    print("Calculadora Básica de Manutenção")
+
+    a = 10
+    b = 3  # Mudança de b para 3 para testar novas funções (Divisão e Módulo)
+
+    print("\n--- Operações ---")
+    
+    # Operações Antigas
+    resultado_soma = calc.somar(a, b)
+    print("Soma:", resultado_soma)
+    
+    resultado_subtracao = calc.subtrair(a, b)
+    print("Subtração:", resultado_subtracao)
+    
+    resultado_multiplicacao = calc.multiplicar(a, b)
+    print("Multiplicação:", resultado_multiplicacao)
+
+    resultado_divisao = calc.dividir(a, b)
+    print("Divisão:", resultado_divisao)
+
+    # NOVAS Operações
+    resultado_potencia = calc.potencia(a, 2) # Testando 10^2
+    print("Potência (10^2):", resultado_potencia)
+
+    resultado_modulo = calc.modulo(a, b) # Testando 10 % 3
+    print("Módulo (10 % 3):", resultado_modulo)
+
+
+    # Geração de Relatório para todas as operações
+    print("\nGerando relatório...")
+    
+    print(gerar_relatorio("soma", resultado_soma))
+    print(gerar_relatorio("subtração", resultado_subtracao))
+    print(gerar_relatorio("multiplicação", resultado_multiplicacao))
+    print(gerar_relatorio("divisão", resultado_divisao))
+    print(gerar_relatorio("potência", resultado_potencia))
+    print(gerar_relatorio("módulo", resultado_modulo))
+    
+    print("\nO log completo está em 'log_calculadora.txt'.")
+
+
+if __name__ == "__main__":
+    # Teste o caso de erro de divisão por zero novamente, alterando 'b' para 0:
+    # b = 0 
+    # main()
+    main()
