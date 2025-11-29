@@ -1,5 +1,7 @@
 # app.py – Sistema simples para manutenção
 
+import datetime  # Import necessário para data/hora
+
 class Calculadora:
     def somar(self, a, b):
         return a + b
@@ -10,18 +12,27 @@ class Calculadora:
     def multiplicar(self, a, b):
         return a * b
 
-    # BUG proposital: divisão por zero não tratada
+    # Correção: Tratamento para divisão por zero
     def dividir(self, a, b):
+        if b == 0:
+            return "Erro: Divisão por zero não é permitida."
         return a / b
 
 
-# Feature inacabada (para aluno completar)
+# Feature completada: Gera relatório textual com data/hora, nome da operação e salva em arquivo .txt
 def gerar_relatorio(operacao, resultado):
     """
-    Gera um relatório textual sobre uma operação matemática.
-    TODO: adicionar data/hora, nome da operação e salvar em arquivo .txt
+    Gera um relatório textual sobre uma operação matemática, incluindo data/hora,
+    nome da operação e salva em arquivo lucas.txt.
     """
-    return f"Resultado da operação {operacao}: {resultado}"
+    agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    relatorio = f"[{agora}] Resultado da operação '{operacao}': {resultado}\n"
+    
+    # Salva no arquivo lucas.txt (modo append para não sobrescrever)
+    with open("lucas.txt", "a", encoding="utf-8") as arquivo:
+        arquivo.write(relatorio)
+    
+    return relatorio.strip()  # Retorna o relatório sem a quebra de linha extra
 
 
 # Função principal
@@ -30,22 +41,22 @@ def main():
     print("Calculadora Básica")
 
     a = 10
-    b = 0  # usado propositalmente para causar erro e gerar tarefa
+    b = 0  # Usado para demonstrar tratamento de erro
 
     print("\n--- Operações ---")
     print("Soma:", calc.somar(a, b))
     print("Subtração:", calc.subtrair(a, b))
     print("Multiplicação:", calc.multiplicar(a, b))
 
-    # Aqui vai causar erro — parte da atividade dos alunos
-    try:
-        print("Divisão:", calc.dividir(a, b))
-    except Exception as e:
-        print("Erro na divisão:", e)
+    # Divisão agora tratada corretamente
+    print("Divisão:", calc.dividir(a, b))
 
-    # Gerar relatório
-    print("\nGerando relatório...")
+    # Gerar e salvar relatório para cada operação
+    print("\nGerando relatórios...")
     print(gerar_relatorio("soma", calc.somar(a, b)))
+    print(gerar_relatorio("subtração", calc.subtrair(a, b)))
+    print(gerar_relatorio("multiplicação", calc.multiplicar(a, b)))
+    print(gerar_relatorio("divisão", calc.dividir(a, b)))
 
 
 if __name__ == "__main__":
